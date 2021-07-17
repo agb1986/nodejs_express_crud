@@ -1,7 +1,12 @@
+const Logger = require('agb-logger');
+
+const User = require('../models/user.model');
+
 module.exports = {
     getUser: (req, res) => {
-        res.send({
-            hello: 'API/USER/GET',
+        const userId = req.query.id;
+        User.getUserById(userId, (user) => {
+            res.send(user);
         });
     },
 
