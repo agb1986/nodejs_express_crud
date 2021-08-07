@@ -4,6 +4,8 @@ const userListRouter = require('./src/server/routes/userList.route');
 
 const app = express();
 
+app.use(express.json());
+
 app.use(userRouter);
 app.use(userListRouter);
 app.listen(5000);

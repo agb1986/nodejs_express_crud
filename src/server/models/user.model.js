@@ -17,22 +17,16 @@ const getUsers = (cb) => {
     });
 };
 
+const writeUsers = (data, cb) => {
+    fs.writeFile(userPath, JSON.stringify(data), (err) => {
+        if (err) {
+            Logger.error('Unable to write data to file', err);
+            cb([]);
+        }
+    });
+};
+
 module.exports = class User {
-    constructor(name, location) {
-        this.name = name;
-        this.location = location;
-    }
-
-    static setName(name) {
-        Logger.debug(`Setting ${this.name} to ${name}`);
-        this.name = name;
-    }
-
-    static setLocation(location) {
-        Logger.debug(`Setting ${this.location} to ${location}`);
-        this.location = location;
-    }
-
     static getAllUsers(cb) {
         getUsers(cb);
     }
@@ -40,14 +34,31 @@ module.exports = class User {
     static getUserById(id, cb) {
         this.getAllUsers((users) => {
             Logger.debug(`Getting User with ID: ${id}`);
-            users.users.forEach((user) => {
-                if (user.id === id) {
-                    Logger.debug(`Returning User: ${user.id}`)
-                    Logger.debug(`Returning User: ${user.name}`)
-                    Logger.debug(`Returning User: ${user.location}`)
-                    return cb(user);
-                }
+            const user = users.find((user) => user.id === id);
+            return user ? cb(user) : cb();
+        });
+    }
+
+    static updateUserById(id, data, cb) {
+        this.getUserById(id, (user) => {
+            if (!user) {
+                return cb(user);
+            }
+
+            Logger.debug(`Updating User: ${user.id}`);
+            user.name = data.name;
+            user.location = data.location;
+
+            this.getAllUsers((users) => {
+                const existingUserIndex = users.findIndex(
+                    (user) => user.id === id
+                );
+                const updatedUserData = [...users];
+                updatedUserData[existingUserIndex] = user;
+                writeUsers(updatedUserData, () => {});
             });
+
+            return cb(user);
         });
     }
 };
