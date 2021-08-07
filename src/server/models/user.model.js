@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
+const uuid = require('uuid').v1;
 const Logger = require('agb-logger');
 
 const userPath = path.join(path.dirname(require.main.filename), 'users.json');
@@ -81,5 +82,23 @@ module.exports = class User {
 
             return cb('User deleted');
         });
+    }
+
+    static createUser(data, cb) {
+        Logger.debug('Creating new user');
+
+        const newUser = {
+            id: uuid().substring(0, 8),
+            name: data.name,
+            location: data.location,
+        };
+
+        this.getAllUsers((users) => {
+            const updatedUserData = [...users];
+            updatedUserData.push(newUser);
+            writeUsers(updatedUserData, () => {});
+        });
+
+        return cb(newUser);
     }
 };

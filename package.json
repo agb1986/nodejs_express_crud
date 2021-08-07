@@ -5,7 +5,8 @@
   },
   "dependencies": {
     "agb-logger": "1.0.1",
-    "express": "4.17.1"
+    "express": "4.17.1",
+    "uuid": "8.3.2"
   },
   "devDependencies": {
     "jest": "27.0.6",

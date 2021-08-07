@@ -4,7 +4,7 @@ const User = require('../models/user.model');
 
 module.exports = {
     getUserList: (req, res) => {
-        Logger.debug('GET all users');
+        Logger.debug('Fetching all Users');
         User.getAllUsers(users => {
             res.send(users);
         });
