@@ -61,4 +61,25 @@ module.exports = class User {
             return cb(user);
         });
     }
+
+    static deleteUserById(id, cb) {
+        this.getUserById(id, (user) => {
+            if (!user) {
+                return cb(user);
+            }
+
+            Logger.debug(`Deleting User: ${user.id}`);
+
+            this.getAllUsers((users) => {
+                const existingUserIndex = users.findIndex(
+                    (user) => user.id === id
+                );
+                const updatedUserData = [...users];
+                updatedUserData.splice(existingUserIndex, 1);
+                writeUsers(updatedUserData, () => {});
+            });
+
+            return cb('User deleted');
+        });
+    }
 };

@@ -26,7 +26,7 @@ module.exports = {
                 Logger.warn(`Unable to find user: ${userId}`);
                 return res.sendStatus(404);
             }
-            res.send(user);
+            res.send(`User Updated: ${userId}`);
         });
     },
 
@@ -34,8 +34,12 @@ module.exports = {
         const userId = req.query.id;
         Logger.debug(`Deleting User: ${userId}`);
 
-        res.send({
-            hello: 'API/USER/DELETE',
+        User.deleteUserById(userId, (user) => {
+            if (!user) {
+                Logger.warn(`Unable to find user: ${userId}`);
+                return res.sendStatus(404);
+            }
+            res.send(`User Deleted: ${userId}`);
         });
     },
 };
