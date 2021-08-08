@@ -4,7 +4,8 @@ const path = require('path');
 const uuid = require('uuid').v1;
 const Logger = require('agb-logger');
 
-const userPath = path.join(path.dirname(require.main.filename), 'users.json');
+// const userPath = path.join(path.dirname(require.main.filename), 'users.json');
+const userPath = './src/data/users.json';
 
 const getUsers = (cb) => {
     fs.readFile(userPath, (err, data) => {

@@ -10,4 +10,5 @@ app.use(express.json());
 app.use(userRouter);
 app.use(userListRouter);
 app.use(userCreateRouter);
-app.listen(5000);
+
+module.exports = app;
