@@ -7,14 +7,14 @@ const Logger = require('agb-logger');
 // const userPath = path.join(path.dirname(require.main.filename), 'users.json');
 const userPath = './src/data/users.json';
 
-const getUsers = (cb) => {
+const getUsers = async (cb) => {
     fs.readFile(userPath, (err, data) => {
         if (err) {
             Logger.error('Error fecthing users', err);
-            cb([]);
+            return cb([]);
         } else {
             Logger.debug(`Getting users from file ${data}`);
-            cb(JSON.parse(data));
+            return cb(JSON.parse(data));
         }
     });
 };
